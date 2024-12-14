@@ -19,7 +19,7 @@ function! ClearWarnings()
     sign unplace * group=nevernest
 endfunction
 
-function! CheckTooFar()
+function! CheckNeverNest()
     call ClearWarnings()
 
     " max indents and warnings
@@ -44,11 +44,11 @@ endfunction
 augroup NeverNest
     autocmd!
     " Check when text changes
-    autocmd TextChanged,TextChangedI * call CheckTooFar()
+    autocmd TextChanged,TextChangedI * call CheckNeverNest()
     " Also check when exiting insert mode
-    autocmd InsertLeave * call CheckTooFar()
+    autocmd InsertLeave * call CheckNeverNest()
     " Clear signs when leaving the buffer
-    autocmd BufLeave * ClearWarnings()
+    autocmd BufLeave * call ClearWarnings()
     " Show warnings
     autocmd CursorMoved * call DisplayWarning()
 augroup END
