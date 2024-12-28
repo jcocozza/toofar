@@ -1,8 +1,9 @@
 " toofar.vim - Warn against deep nesting
 
-let s:max_indent = 3
+let g:toofar_max_indent = get(g:, 'toofar_max_indent', 3)
+
 let s:warnings = {}
-sign define nevernest_warn text=NN texthl=WarningMsg
+sign define nevernest_warn text=NN texthl=TabLineSel
 
 function! DisplayWarning()
     let lnum = line('.')
@@ -29,10 +30,10 @@ function! CheckNeverNest()
     let warning_count = 0
     for lnum in range(1, line('$'))
         let indent_level = indent(lnum) / indent_size
-        if indent_level > s:max_indent
+        if indent_level > g:toofar_max_indent
             execute 'sign place ' . lnum . ' line=' . lnum . ' name=nevernest_warn group=nevernest buffer=' . bufnr('%')
             let warning_count += 1
-            let s:warnings[lnum] = 'NN: [' . lnum . '] indent ' . indent_level . ' > ' . s:max_indent
+            let s:warnings[lnum] = 'NN: [' . lnum . '] indent ' . indent_level . ' > ' . g:toofar_max_indent
         endif
     endfor
 
