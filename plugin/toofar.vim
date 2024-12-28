@@ -1,6 +1,8 @@
 " toofar.vim - Warn against deep nesting
 
 let g:toofar_max_indent = get(g:, 'toofar_max_indent', 3)
+let g:toofar_ignore_filetypes = get(g:, 'toofar_ignore_filetypes', [])
+
 
 let s:warnings = {}
 sign define nevernest_warn text=NN texthl=TabLineSel
@@ -21,6 +23,10 @@ function! ClearWarnings()
 endfunction
 
 function! CheckNeverNest()
+    " ignore specified files
+    if index(g:toofar_ignore_filetypes, &filetype) >= 0
+        return
+    endif
     call ClearWarnings()
 
     " max indents and warnings
