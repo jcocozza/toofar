@@ -1,6 +1,6 @@
 # toofar
 
-A set of programming suggestions in the form of warnings for vim.
+A set of programming suggestions that might indication you've gone too far.
 
 ## Never Nesting
 toofar will warn about code that is nested to deeply.
