@@ -4,22 +4,23 @@ let g:toofar_max_indent = get(g:, 'toofar_max_indent', 3)
 let g:toofar_ignore_filetypes = get(g:, 'toofar_ignore_filetypes', [])
 
 
-let s:warnings = {}
+let b:toofar_warnings = {}
 sign define nevernest_warn text=NN texthl=TabLineSel
 
 function! DisplayWarning()
     let lnum = line('.')
-    if has_key(s:warnings, lnum)
-        echo s:warnings[lnum]
-    elseif !has_key(s:warnings, lnum)
+    if has_key(b:toofar_warnings, lnum)
+        echo b:toofar_warnings[lnum]
+    elseif !has_key(b:toofar_warnings, lnum)
     " Clear the warning message if the line is no longer warning
         echo ""
     endif
 endfunction
 
 function! ClearWarnings()
-    let s:warnings = {}
-    sign unplace * group=nevernest
+    let b:toofar_warnings = {}
+    " sign unplace * group=nevernest
+    execute 'sign unplace * group=nevernest buffer=' . bufnr('%')
 endfunction
 
 function! CheckNeverNest()
@@ -39,7 +40,7 @@ function! CheckNeverNest()
         if indent_level > g:toofar_max_indent
             execute 'sign place ' . lnum . ' line=' . lnum . ' name=nevernest_warn group=nevernest buffer=' . bufnr('%')
             let warning_count += 1
-            let s:warnings[lnum] = 'NN: [' . lnum . '] indent ' . indent_level . ' > ' . g:toofar_max_indent
+            let b:toofar_warnings[lnum] = 'NN: [' . lnum . '] indent ' . indent_level . ' > ' . g:toofar_max_indent
         endif
     endfor
 
